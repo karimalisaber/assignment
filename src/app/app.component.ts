@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
-
-enum ActionTypes  {
+import { UserDTO } from './models/interfaces';
+export enum ActionTypes  {
   Label,
   TextBox,
   Dropdown,
@@ -9,7 +9,7 @@ enum ActionTypes  {
   RadioButton
 }
 
-const DefaulUser = [
+const DefaulUser : UserDTO[] = [
   {
     controler: 'name',
     placeholder: 'name',
@@ -69,7 +69,7 @@ const DefaulUser = [
 export class AppComponent implements OnInit {
   title = 'code-chalenge';
   acitonTypes = ActionTypes;
-  user = DefaulUser;
+  user: UserDTO[] = DefaulUser;
   isInvalidJson: boolean = false;
 
   dynamicForm: FormGroup = new FormGroup({});
@@ -105,16 +105,12 @@ export class AppComponent implements OnInit {
      return item
   }
 
-
   convertJsonObjectToUserForm(newUser){
-    
     try{
-
       this.user = JSON.parse(newUser) 
-      console.log(this.user);
       this.isInvalidJson = false;
-
     }
+    
     catch{
       this.user = [];
       this.isInvalidJson = true;
@@ -124,5 +120,4 @@ export class AppComponent implements OnInit {
   getDefaultUser(){
     this.user = DefaulUser
   }
-
 }
