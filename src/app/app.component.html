@@ -1,50 +1,180 @@
-<!-- <ng-container> -->
-  <form  [formGroup]="dynamicForm" action="">
-    <div *ngFor="let field of user" class="example-container">
-      <div *ngIf="field.type === acitonTypes.Label" class="form-control">
-        <mat-form-field appearance="fill">
-          <mat-label>{{field.placeholder}}</mat-label>
-          <input [formControlName]="field.controler"  matInput>
-        </mat-form-field>
-      </div>
+<div class="row no-gutters">
+  <div class="col-md-6">    
+    <mat-form-field  appearance="fill">
+      <mat-label>write your json </mat-label>
+      <textarea #newUserJson style="height: 70vh;" matInput> 
+        {{user | json}}
+      </textarea>
+    </mat-form-field>
+    <div class="w-100"></div>
 
+    <button class="btn btn-primary" (click)="convertJsonObjectToUserForm(newUserJson.value)"> convert </button>
+    <button class="btn btn-primary" (click)="getDefaultUser()"> get default user </button>
 
-      <div *ngIf="field.type === acitonTypes.TextBox" class="form-control">
-        <mat-form-field appearance="fill">
-          <mat-label>{{field.placeholder}}</mat-label>
-          <input [formControlName]="field.controler"  matInput>
-        </mat-form-field>
-      </div>
-
-
-      <ng-container *ngIf="field.type === acitonTypes.Dropdown">
-        <mat-form-field appearance="fill">
-          <mat-label>{{field.placeholder}}</mat-label>
-          <mat-select [formControlName]="field.controler">
-            <mat-option *ngFor="let option of field.options" [value]="field.value">
-            {{option.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </ng-container>
-      
-      <ng-container *ngIf="field.type === acitonTypes.Checkbox">
-        <section [formGroupName]="field.controler" class="example-section">
-           <mat-checkbox *ngFor="let option of field.options" [formControlName]="option.controler" class="example-margin">{{option.placeholder}}</mat-checkbox>
-        </section>
-      </ng-container>
+    <div class="instructions">
+      <h6  class="text text-primary">
+        you Can write your own JSON adding any set of data you need just follow the instructions 
+      </h6>
 
       
-      <ng-container *ngIf="field.type === acitonTypes.RadioButton">
-        <mat-radio-group [formControlName]="field.controler" aria-label="Select an option">
-          <mat-radio-button *ngFor="let option of field.options" [value]="option.id">Option 1</mat-radio-button>
-        </mat-radio-group>
-      </ng-container>
-      
-  
+      <ul>
+        <p>
+          you have five types of controllers, label = 0, textared = 1, dropdown = 2 , checkbox =3, and radionbutton =4
+        </p>
+        <li>
+          <span>
+              if you need to add field of type label just push object element on the array with type = 0, placeholder, value, controler, E.g 
+              <b>
+                &#123;
+                controler: 'name',
+                placeholder: 'name',
+                value: 'karim Ali Hassan Saber',
+                type: 0
+                &#125;
+            </b>
+          </span>
+        </li>
+
+        <li>
+          <span>
+              if you need to add field of type textArea just push object element on the array with type = 1, placeholder, value, controler, E.g 
+              <b>
+                &#123;
+                  controler: 'description',
+                  placeholder: 'description',
+                  value: 'front end developer',
+                  type: 1
+                &#125;
+            </b>
+          </span>
+        </li>
+
+        
+        <li>
+          <span>
+              if you need to add field of type Dropdown just push object element on the array with type = 2, placeholder, value, controler, E.g 
+              <b>
+                &#123;
+                controler: 'technology',
+                placeholder: 'technology',
+                options: [
+                  Array of option with 
+                   &#123;
+                    id: number,
+                    name: string
+                  &#125;
+                ],
+                value: // defalut value you need,
+                type: 2
+                &#125;
+            </b>
+          </span>
+        </li>
+
+        <li>
+          <span>
+              if you need to add field of type Checkbox just push object element on the array with type = 3, placeholder, value, controler, E.g 
+              <b>
+                &#123;
+                controler: 'Sports',
+                placeholder: 'Sports',
+                options: [
+                  Array of option with 
+                   &#123;
+                    id: number,
+                    name: string,
+                    placeholder: string,
+                    value: boolean,
+                    controler: string, // controler of each checkbox
+                  &#125;
+                ],
+                value: // defalut value you need,
+                type: 3
+                &#125;
+            </b>
+          </span>
+        </li>
+
+
+        <li>
+          <span>
+              if you need to add field of type RadioButton just push object element on the array with type = 4, placeholder, value, controler, E.g 
+              <b>
+                &#123;
+                controler: 'technology',
+                placeholder: 'technology',
+                options: [
+                  Array of option with 
+                   &#123;
+                    id: number,
+                    placeholder: string
+                  &#125;
+                ],
+                value: // defalut value you need,
+                type: 4
+                &#125;
+            </b>
+          </span>
+        </li>
+      </ul>
     </div>
+   
+
+  </div>
+
+
+  <div class="col-md-6">
+    <form *ngIf="!isInvalidJson" [formGroup]="dynamicForm" action="">
+      <div *ngFor="let field of user" class="example-container">
+        <div *ngIf="field.type === acitonTypes.Label">
+          <mat-form-field appearance="fill" class="form-group">
+            <mat-label>{{field.placeholder}}</mat-label>
+            <input [formControlName]="field.controler"  matInput>
+          </mat-form-field>
+        </div>
+    
+        <div *ngIf="field.type === acitonTypes.TextBox">
+          <mat-form-field appearance="fill">
+            <mat-label>{{field.placeholder}}</mat-label>
+            <textarea [formControlName]="field.controler"  matInput></textarea>
+          </mat-form-field>
+        </div>
   
-    <button class="btn btn-primary" (click)="convertJsonObjectToUserForm()"> convert </button>
-  </form>  
-<!-- </ng-container> -->
+        <ng-container *ngIf="field.type === acitonTypes.Dropdown">
+          <mat-form-field appearance="fill">
+            <mat-label>{{field.placeholder}}</mat-label>
+            <mat-select [formControlName]="field.controler">
+              <mat-option *ngFor="let option of field.options" [value]="field.value">
+              {{option.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-container>
+        
+        <ng-container *ngIf="field.type === acitonTypes.Checkbox">
+          <h4>{{field.placeholder}}</h4>
+
+          <section [formGroupName]="field.controler" class="example-section">
+             <mat-checkbox *ngFor="let option of field.options" [formControlName]="option.controler" class="d-block example-margin">{{option.placeholder}}</mat-checkbox>
+          </section>
+        </ng-container>
+  
+        
+        <ng-container *ngIf="field.type === acitonTypes.RadioButton">
+          <h4>{{field.placeholder}}</h4>
+
+          <mat-radio-group [formControlName]="field.controler" aria-label="Select an option">
+            <mat-radio-button class="d-block" *ngFor="let option of field.options" [value]="option.id">{{option.placeholder}}</mat-radio-button>
+          </mat-radio-group>
+        </ng-container>
+      </div>
+    </form>  
+
+    <div *ngIf="isInvalidJson" class="text text-danger m-5">
+      please wirte a valid Json Object as the default user 
+    </div>
+  </div>
+</div>
+
+
 

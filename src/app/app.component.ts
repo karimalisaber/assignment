@@ -13,49 +13,48 @@ const DefaulUser = [
   {
     controler: 'name',
     placeholder: 'name',
-    value: 'karim',
+    value: 'karim Ali Hassan Saber',
     type: ActionTypes.Label
   },
   {
-    controler: 'email',
-    placeholder: 'name',
-    value: 'karim',
+    controler: 'description',
+    placeholder: 'description',
+    value: 'front end developer',
     type: ActionTypes.TextBox
   },
 
   {
-    controler: 'test',
-    placeholder: 'name',
+    controler: 'technology',
+    placeholder: 'technology',
     options: [
-      {id: 1, name: 'karim'},
-      {id: 2, name: 'karim'},
-      {id: 3, name: 'karim'},
-      {id: 4, name: 'karim'}
+      {id: 1, name: 'Vue'},
+      {id: 2, name: 'Angular'},
+      {id: 3, name: 'React'},
     ],
-    value: 4,
+    value: 3,
     type: ActionTypes.Dropdown
   },
   {
-    controler: 'check',
-    placeholder: 'name',
+    controler: 'Sports',
+    placeholder: 'Sports',
     options: [
-      {id: 1, placeholder: 'karim', value: true , controler: 'test'},
-      {id: 2, placeholder: 'karim', value: true, controler: 'tfest'},
-      {id: 3, placeholder: 'karim', value: true, controler: 'tefst'},
-      {id: 4, placeholder: 'karim', value: true, controler: 'tesft'}
+      {id: 1, placeholder: 'football', value: true , controler: 'test'},
+      {id: 2, placeholder: 'swimming', value: true, controler: 'tfest'},
+      {id: 3, placeholder: 'table tennis', value: true, controler: 'tefst'},
+      {id: 4, placeholder: 'Running', value: true, controler: 'tesft'}
     ],
     value: null,
     type: ActionTypes.Checkbox
   },
   {
-    controler: 'namfe',
-    placeholder: 'name',
-    value: 3,
+    controler: 'professional',
+    placeholder: 'professional',
+    value: 4,
     options: [
-      {id: 1, placeholder: 'karim', controler: 'test'},
-      {id: 2, placeholder: 'karim', controler: 'tfest'},
-      {id: 3, placeholder: 'karim', controler: 'tefst'},
-      {id: 4, placeholder: 'karim', controler: 'tesft'}
+      {id: 1, placeholder: 'fresh'},
+      {id: 2, placeholder: 'junior'},
+      {id: 3, placeholder: 'mid level'},
+      {id: 4, placeholder: 'senior'},
     ],
     type: ActionTypes.RadioButton
   },
@@ -71,6 +70,7 @@ export class AppComponent implements OnInit {
   title = 'code-chalenge';
   acitonTypes = ActionTypes;
   user = DefaulUser;
+  isInvalidJson: boolean = false;
 
   dynamicForm: FormGroup = new FormGroup({});
   constructor(private fb: FormBuilder){}
@@ -78,10 +78,6 @@ export class AppComponent implements OnInit {
   ngOnInit(){
     this.initForm();
   }
-
-  // get user(){
-  //   return this.dynamicForm.get('user') as FormArray
-  // }
   
   initForm(){
     this.dynamicForm = this.fb.group({})
@@ -106,16 +102,27 @@ export class AppComponent implements OnInit {
     source.forEach(option=>{
        item[option.controler] = option.value      
     })
-    // console.log(this.dynamicForm.get(source.));
-    
      return item
-
-    
   }
 
 
-  convertJsonObjectToUserForm(){
-    // this.dynamicForm.addControl('name', this.fb.control(''))
+  convertJsonObjectToUserForm(newUser){
+    
+    try{
+
+      this.user = JSON.parse(newUser) 
+      console.log(this.user);
+      this.isInvalidJson = false;
+
+    }
+    catch{
+      this.user = [];
+      this.isInvalidJson = true;
+    }
+  }
+
+  getDefaultUser(){
+    this.user = DefaulUser
   }
 
 }
