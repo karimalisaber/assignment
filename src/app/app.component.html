@@ -1,20 +1,50 @@
-<form  action="">
-  <div class="example-container">
-    <mat-form-field appearance="fill">
-      <mat-label>Input</mat-label>
-      <input matInput>
-    </mat-form-field>
-    <br>
-    <!-- <mat-form-field appearance="fill">
-      <mat-label>Select</mat-label>
-      <mat-select>
-        <mat-option value="option">Option</mat-option>
-      </mat-select>
-    </mat-form-field> -->
-    <br>
-    <mat-form-field appearance="fill">
-      <mat-label>Textarea</mat-label>
-      <textarea matInput></textarea>
-    </mat-form-field>
-  </div>
-</form>
+<!-- <ng-container> -->
+  <form  [formGroup]="dynamicForm" action="">
+    <div *ngFor="let field of user" class="example-container">
+      <div *ngIf="field.type === acitonTypes.Label" class="form-control">
+        <mat-form-field appearance="fill">
+          <mat-label>{{field.placeholder}}</mat-label>
+          <input [formControlName]="field.controler"  matInput>
+        </mat-form-field>
+      </div>
+
+
+      <div *ngIf="field.type === acitonTypes.TextBox" class="form-control">
+        <mat-form-field appearance="fill">
+          <mat-label>{{field.placeholder}}</mat-label>
+          <input [formControlName]="field.controler"  matInput>
+        </mat-form-field>
+      </div>
+
+
+      <ng-container *ngIf="field.type === acitonTypes.Dropdown">
+        <mat-form-field appearance="fill">
+          <mat-label>{{field.placeholder}}</mat-label>
+          <mat-select [formControlName]="field.controler">
+            <mat-option *ngFor="let option of field.options" [value]="field.value">
+            {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      
+      <ng-container *ngIf="field.type === acitonTypes.Checkbox">
+        <section [formGroupName]="field.controler" class="example-section">
+           <mat-checkbox *ngFor="let option of field.options" [formControlName]="option.controler" class="example-margin">{{option.placeholder}}</mat-checkbox>
+        </section>
+      </ng-container>
+
+      
+      <ng-container *ngIf="field.type === acitonTypes.RadioButton">
+        <mat-radio-group [formControlName]="field.controler" aria-label="Select an option">
+          <mat-radio-button *ngFor="let option of field.options" [value]="option.id">Option 1</mat-radio-button>
+        </mat-radio-group>
+      </ng-container>
+      
+  
+    </div>
+  
+    <button class="btn btn-primary" (click)="convertJsonObjectToUserForm()"> convert </button>
+  </form>  
+<!-- </ng-container> -->
+
